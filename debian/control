@@ -1,0 +1,26 @@
+Source: qtimageformats-opensource-src
+Section: libs
+Priority: optional
+Maintainer: Deepin Developer <deepin-dev@deepin.org>
+Uploaders: Deepin Packages Builder <packages@deepin.org>
+Build-Depends: debhelper-compat (= 13),
+               dpkg-dev (>= 1.16.1),
+               libmng-dev,
+               libtiff-dev,
+               libwebp-dev (>= 0.4.0-4.1~),
+               qtbase5-dev (>= 5.15.3~)
+Standards-Version: 4.6.0
+Rules-Requires-Root: no
+Homepage: https://doc.qt.io/qt-5/qtimageformats-index.html
+
+Package: qt5-image-formats-plugins
+Architecture: any
+Multi-Arch: same
+Pre-Depends: dpkg (>= 1.15.6~), ${misc:Pre-Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Qt 5 Image Formats module
+ Qt is a cross-platform C++ application framework. Qt's primary feature
+ is its rich set of widgets that provide standard GUI functionality.
+ .
+ This package contains plugins for adding support for ICNS, MNG, TGA, TIFF,
+ WBMP and WEBP image formats.
