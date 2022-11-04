@@ -8,7 +8,7 @@ Build-Depends: debhelper-compat (= 13),
                libmng-dev,
                libtiff-dev,
                libwebp-dev (>= 0.4.0-4.1~),
-               qtbase5-dev (>= 5.15.3~)
+               qtbase5-dev (>= 5.15.7~)
 Standards-Version: 4.6.0
 Rules-Requires-Root: no
 Homepage: https://doc.qt.io/qt-5/qtimageformats-index.html
