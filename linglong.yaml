@@ -1,0 +1,22 @@
+package:
+  id: qtimageformats
+  name: qtimageformats
+  kind: lib
+  version: 5.15.7-1+dde
+  description: |
+    qtimageformats
+
+base:
+  id: org.deepin.base
+  version: 23.0.0
+
+depends:
+  - id: qtbase
+    version: 5.15.7-1+dde
+
+source:
+  kind: local
+
+build:
+  kind: qmake
+
