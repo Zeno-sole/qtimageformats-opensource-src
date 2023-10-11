@@ -1,0 +1,60 @@
+Description: implement support for file memory mapping for tiff reading
+ libtiff will by default attempt to establish a memory map for reading
+ a tiff file. Implement the callbacks to establish this in Qt's tiff
+ handler, since this will save data copying, particularly in the case
+ where the input file is already in memory as a resource or QBuffer.
+ .
+ Also, this makes sure that QTiffHandler utilizes libtiff's default,
+ and hence best tested, code path for tiff decoding. Specifically, it
+ avoids a hitting a bug that breaks reading of certain tiffs in the
+ newly released libtiff version 4.5.0.
+Origin: upstream, https://code.qt.io/cgit/qt/qtimageformats.git/commit/?id=cd92d76e9dcd98f4
+Last-Update: 2023-01-12
+
+--- a/src/plugins/imageformats/tiff/qtiffhandler.cpp
++++ b/src/plugins/imageformats/tiff/qtiffhandler.cpp
+@@ -43,6 +43,8 @@
+ #include <qdebug.h>
+ #include <qimage.h>
+ #include <qglobal.h>
++#include <qbuffer.h>
++#include <qfiledevice.h>
+ extern "C" {
+ #include "tiffio.h"
+ }
+@@ -90,13 +92,33 @@ toff_t qtiffSizeProc(thandle_t fd)
+     return static_cast<QIODevice *>(fd)->size();
+ }
+ 
+-int qtiffMapProc(thandle_t /*fd*/, tdata_t* /*pbase*/, toff_t* /*psize*/)
++int qtiffMapProc(thandle_t fd, void **base, toff_t *size)
+ {
++    QIODevice *device = static_cast<QIODevice *>(fd);
++
++    QFileDevice *file = qobject_cast<QFileDevice *>(device);
++    if (file) {
++        *base = file->map(0, file->size());
++        if (*base != nullptr) {
++            *size = file->size();
++            return 1;
++        }
++    } else {
++        QBuffer *buf = qobject_cast<QBuffer *>(device);
++        if (buf) {
++            *base = const_cast<char *>(buf->data().constData());
++            *size = buf->size();
++            return 1;
++        }
++    }
+     return 0;
+ }
+ 
+-void qtiffUnmapProc(thandle_t /*fd*/, tdata_t /*base*/, toff_t /*size*/)
++void qtiffUnmapProc(thandle_t fd, void *base, toff_t /*size*/)
+ {
++    QFileDevice *file = qobject_cast<QFileDevice *>(static_cast<QIODevice *>(fd));
++    if (file && base)
++        file->unmap(static_cast<uchar *>(base));
+ }
+ 
+ 

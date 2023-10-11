@@ -1,0 +1,8 @@
+--- qtimageformats-opensource-src-5.15.8.orig/tests/benchmarks/benchmarks.pro
++++ qtimageformats-opensource-src-5.15.8/tests/benchmarks/benchmarks.pro
+@@ -1,3 +1,3 @@
+ TEMPLATE = subdirs
+ SUBDIRS =
+-qtConfig(system-zlib): SUBDIRS += mng tiff
++qtConfig(system-zlib): SUBDIRS += mng
+

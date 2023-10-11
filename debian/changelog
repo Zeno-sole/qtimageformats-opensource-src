@@ -1,4 +1,11 @@
-qtimageformats-opensource-src (5.15.8-1+dde) UNRELEASED; urgency=medium
+qtimageformats-opensource-src (5.15.8-2deepin1) unstable; urgency=medium
+
+  [ LiChengGang ]
+  * fix tiff6 auto tests errot
+
+ -- LiChengGang <lichenggang@uniontech.com>  Wed, 11 Oct 2023 09:14:19 +0800
+
+qtimageformats-opensource-src (5.15.8-1+dde) unstable; urgency=medium
 
   * New upstream release (5.15.8).
 
